@@ -217,6 +217,14 @@ npx allure generate allure-results --clean -o allure-report
 npx allure open allure-report
 ```
 
+**Overview — dashboard de resultado geral:**
+
+![Allure Report Overview](report.png)
+
+**Suites — navegação por Feature > Cenário > Step (visão Gherkin):**
+
+![Allure Report Gherkin](report-gherkin.png)
+
 **O que o relatório mostra:**
 
 ```
