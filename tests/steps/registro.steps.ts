@@ -1,32 +1,28 @@
 import { expect } from '@playwright/test';
-import { Given, When, Then } from '../support/fixtures';
-import { uniqueEmail } from '../support/fixtures';
+import { Given, When, Then, uniqueEmail } from '../support/fixtures';
 
 Given('que o usuário acessa a página de registro', async ({ registerPage }) => {
   await registerPage.goto();
 });
 
-When('preenche o formulário com um e-mail único e a senha {string}', async ({ world, registerPage }, senha: string) => {
-  world.email = uniqueEmail('register');
-  world.password = senha;
-  await registerPage.emailInput.fill(world.email);
-  await registerPage.passwordInput.fill(senha);
-  await registerPage.repeatPasswordInput.fill(senha);
-});
+When(
+  'preenche o formulário com um e-mail único e a senha {string}',
+  async ({ world, registerPage }, senha: string) => {
+    world.email = uniqueEmail('register');
+    world.password = senha;
+    await registerPage.fillCredentials(world.email, senha);
+  },
+);
 
 When('preenche o formulário com o e-mail já cadastrado', async ({ world, registerPage }) => {
-  await registerPage.emailInput.fill(world.email);
-  await registerPage.passwordInput.fill(world.password);
-  await registerPage.repeatPasswordInput.fill(world.password);
+  await registerPage.fillCredentials(world.email, world.password);
 });
 
 When(
   'preenche o e-mail único com senha {string} e confirmação {string}',
   async ({ world, registerPage }, senha: string, confirmacao: string) => {
     world.email = uniqueEmail('diffpass');
-    await registerPage.emailInput.fill(world.email);
-    await registerPage.passwordInput.fill(senha);
-    await registerPage.repeatPasswordInput.fill(confirmacao);
+    await registerPage.fillCredentials(world.email, senha, confirmacao);
   },
 );
 

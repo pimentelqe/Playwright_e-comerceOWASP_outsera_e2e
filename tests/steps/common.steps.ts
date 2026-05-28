@@ -1,13 +1,6 @@
 import { expect } from '@playwright/test';
 import { DataTable } from '@cucumber/cucumber';
-import { Given, When, Then } from '../support/fixtures';
-import {
-  PASSWORD,
-  DEFAULT_ADDRESS,
-  DEFAULT_CARD,
-  uniqueEmail,
-  createUserViaApi,
-} from '../support/fixtures';
+import { Given, When, Then, PASSWORD, DEFAULT_ADDRESS, DEFAULT_CARD, uniqueEmail, createUserViaApi } from '../support/fixtures';
 
 // ─── Auth & setup ────────────────────────────────────────────────────────────
 
@@ -41,15 +34,18 @@ Given(
   },
 );
 
-Given('que o usuário completou a seleção de endereço', async ({ basketPage, addressSelectPage, addressCreatePage }) => {
-  await basketPage.goto();
-  await basketPage.checkout();
-  await addressSelectPage.addNewAddress();
-  await addressCreatePage.fill(DEFAULT_ADDRESS);
-  await addressCreatePage.submit();
-  await addressSelectPage.selectFirstAddress();
-  await addressSelectPage.proceed();
-});
+Given(
+  'que o usuário completou a seleção de endereço',
+  async ({ basketPage, addressSelectPage, addressCreatePage }) => {
+    await basketPage.goto();
+    await basketPage.checkout();
+    await addressSelectPage.addNewAddress();
+    await addressCreatePage.fill(DEFAULT_ADDRESS);
+    await addressCreatePage.submit();
+    await addressSelectPage.selectFirstAddress();
+    await addressSelectPage.proceed();
+  },
+);
 
 Given('que selecionou a entrega {string}', async ({ deliveryPage }, metodo: string) => {
   await deliveryPage.selectDelivery(metodo);
@@ -58,9 +54,8 @@ Given('que selecionou a entrega {string}', async ({ deliveryPage }, metodo: stri
 
 Given(
   'que adicionou e selecionou um cartão terminando em {string}',
-  async ({ page, paymentPage }, _ultimos4: string) => {
+  async ({ paymentPage }, _ultimos4: string) => {
     await paymentPage.addCard(DEFAULT_CARD);
-    await page.locator('simple-snack-bar').waitFor({ state: 'visible', timeout: 10000 });
     await paymentPage.selectFirstCard();
     await paymentPage.proceed();
   },
@@ -68,12 +63,15 @@ Given(
 
 // ─── Address form ─────────────────────────────────────────────────────────────
 
-When('adiciona um novo endereço:', async ({ addressSelectPage, addressCreatePage }, table: DataTable) => {
-  const data = table.hashes()[0] as any;
-  await addressSelectPage.addNewAddress();
-  await addressCreatePage.fill(data);
-  await addressCreatePage.submit();
-});
+When(
+  'adiciona um novo endereço:',
+  async ({ addressSelectPage, addressCreatePage }, table: DataTable) => {
+    const data = table.hashes()[0] as any;
+    await addressSelectPage.addNewAddress();
+    await addressCreatePage.fill(data);
+    await addressCreatePage.submit();
+  },
+);
 
 When(
   'inicia o preenchimento de novo endereço:',
