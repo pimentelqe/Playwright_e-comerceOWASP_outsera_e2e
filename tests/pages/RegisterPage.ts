@@ -28,11 +28,15 @@ export class RegisterPage extends BasePage {
     }
   }
 
-  async register(email: string, password: string, options?: { securityQuestion?: string; answer?: string }) {
-    await this.goto();
+  async fillCredentials(email: string, password: string, confirmPassword?: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    await this.repeatPasswordInput.fill(password);
+    await this.repeatPasswordInput.fill(confirmPassword ?? password);
+  }
+
+  async register(email: string, password: string, options?: { securityQuestion?: string; answer?: string }) {
+    await this.goto();
+    await this.fillCredentials(email, password);
     await this.selectSecurityQuestion(options?.securityQuestion);
     await this.securityAnswerInput.fill(options?.answer ?? 'Fluffy');
     await this.registerButton.click();

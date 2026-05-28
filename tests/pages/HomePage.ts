@@ -9,15 +9,15 @@ export class HomePage extends BasePage {
   async goto() {
     await this.page.goto('/#/search');
     await this.dismissWelcomeBanner();
-    await this.page.waitForSelector('mat-card:has(div.item-name)');
+    await this.page.locator('mat-card').first().waitFor({ state: 'visible', timeout: 30000 });
+    // dismiss tutorial/challenge hint tooltip if present
+    await this.page.keyboard.press('Escape').catch(() => {});
   }
 
   get cartButton() { return this.page.getByRole('button', { name: 'Show the shopping cart' }); }
 
   productCard(name: string) {
-    return this.page.locator('mat-card').filter({
-      has: this.page.locator('div.item-name', { hasText: name }),
-    });
+    return this.page.locator('mat-card').filter({ hasText: name });
   }
 
   async addToBasket(productName: string) {

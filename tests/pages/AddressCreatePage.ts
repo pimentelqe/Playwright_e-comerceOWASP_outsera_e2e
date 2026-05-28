@@ -18,14 +18,22 @@ export class AddressCreatePage extends BasePage {
 
   get submitButton() { return this.page.locator('button[type="submit"]'); }
 
+  private get countryField() { return this.page.getByPlaceholder('Please provide a country.'); }
+  private get nameField() { return this.page.getByPlaceholder('Please provide a name.'); }
+  private get mobileField() { return this.page.getByPlaceholder('Please provide a mobile number.'); }
+  private get zipField() { return this.page.getByPlaceholder('Please provide a ZIP code.'); }
+  private get addressField() { return this.page.getByPlaceholder('Please provide an address.'); }
+  private get cityField() { return this.page.getByPlaceholder('Please provide a city.'); }
+  private get stateField() { return this.page.getByPlaceholder('Please provide a state.'); }
+
   async fill(data: AddressData) {
-    await this.page.getByPlaceholder('Please provide a country.').fill(data.country);
-    await this.page.getByPlaceholder('Please provide a name.').fill(data.name);
-    await this.page.getByPlaceholder('Please provide a mobile number.').fill(data.mobile);
-    await this.page.getByPlaceholder('Please provide a ZIP code.').fill(data.zip);
-    await this.page.getByPlaceholder('Please provide an address.').fill(data.address);
-    await this.page.getByPlaceholder('Please provide a city.').fill(data.city);
-    await this.page.getByPlaceholder('Please provide a state.').fill(data.state);
+    await this.countryField.fill(data.country);
+    await this.nameField.fill(data.name);
+    await this.mobileField.fill(data.mobile);
+    await this.zipField.fill(data.zip);
+    await this.addressField.fill(data.address);
+    await this.cityField.fill(data.city);
+    await this.stateField.fill(data.state);
   }
 
   async submit() {

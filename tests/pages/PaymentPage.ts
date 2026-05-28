@@ -16,6 +16,11 @@ export class PaymentPage extends BasePage {
   get proceedButton() { return this.page.getByRole('button', { name: 'Proceed to review' }); }
 
   private get nameField() { return this.page.getByRole('textbox', { name: 'Name' }); }
+  private get cardNumberField() { return this.page.getByRole('spinbutton', { name: 'Card Number' }); }
+  private get expiryMonthSelect() { return this.page.locator('select').nth(0); }
+  private get expiryYearSelect() { return this.page.locator('select').nth(1); }
+  private get submitCardButton() { return this.page.locator('button[type="submit"]').first(); }
+  private get cardAddedSnackbar() { return this.page.locator('simple-snack-bar'); }
 
   async expandNewCardForm() {
     if (!await this.nameField.isVisible()) {
@@ -27,10 +32,11 @@ export class PaymentPage extends BasePage {
   async addCard(data: CardData) {
     await this.expandNewCardForm();
     await this.nameField.fill(data.name);
-    await this.page.getByRole('spinbutton', { name: 'Card Number' }).fill(data.number);
-    await this.page.locator('select').nth(0).selectOption(data.expiryMonth);
-    await this.page.locator('select').nth(1).selectOption(data.expiryYear);
-    await this.page.locator('button[type="submit"]').first().click();
+    await this.cardNumberField.fill(data.number);
+    await this.expiryMonthSelect.selectOption(data.expiryMonth);
+    await this.expiryYearSelect.selectOption(data.expiryYear);
+    await this.submitCardButton.click();
+    await this.cardAddedSnackbar.waitFor({ state: 'visible', timeout: 10000 });
   }
 
   async selectFirstCard() {
