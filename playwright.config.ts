@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
+import { getEnvConfig } from './config/environments';
+
+const env = getEnvConfig();
 
 const bddConfig = defineBddConfig({
   features: 'features/**/*.feature',
@@ -12,13 +15,13 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2,
   reporter: [
     ['html'],
     ['allure-playwright', { outputFolder: 'allure-results', suiteTitle: false }],
   ],
   use: {
-    baseURL: 'http://127.0.0.1:3006',
+    baseURL: env.baseURL,
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
